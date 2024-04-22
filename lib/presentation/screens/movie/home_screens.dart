@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_app/presentation/providers/movie/movies_providers.dart';
-import 'package:movie_app/widget/shared/custom_app.dart';
+import 'package:movie_app/presentation/providers/movie/movies_slideshow_provider.dart';
+import 'package:movie_app/widget/widget.dart';
 
 class HomeScreens extends StatelessWidget {
   static const name = "home_screen";
@@ -11,6 +12,7 @@ class HomeScreens extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: _HomeViews(),
+      bottomNavigationBar: CustomBottomNavigation(),
     );
   }
 }
@@ -27,25 +29,79 @@ class _HomeViewsState extends ConsumerState<_HomeViews> {
   void initState() {
     super.initState();
     ref.read(noPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch(noPlayingMoviesProvider);
-    return Column(
-      children: [
-        const CustomApp(),
-        Expanded(
-          child: ListView.builder(
-            itemCount: nowPlayingMovies.length,
-            itemBuilder: (context, index) {
-              final movie = nowPlayingMovies[index];
-              return ListTile(
-                title: Text(movie.title),
-              );
-            },
+    //! Popular movies
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final slidesShowMovies = ref.watch(moviesSlideshowProvider);
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: CustomApp(),
           ),
         ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return Column(
+                children: [
+                  MoviesSlideshow(
+                    movies: slidesShowMovies,
+                  ),
+                  MovieHorizontalview(
+                    movies: nowPlayingMovies,
+                    title: 'Solo en cine',
+                    subTitle: 'Lunes 22',
+                    loadNextPage: () => ref
+                        .read(noPlayingMoviesProvider.notifier)
+                        .loadNextPage(),
+                  ),
+                  MovieHorizontalview(
+                    movies: nowPlayingMovies,
+                    title: 'Próximamente',
+                    subTitle: 'En este mes',
+                    loadNextPage: () => ref
+                        .read(noPlayingMoviesProvider.notifier)
+                        .loadNextPage(),
+                  ),
+                  MovieHorizontalview(
+                    movies: nowPlayingMovies,
+                    title: 'Solo en cine',
+                    subTitle: 'Lunes 22',
+                    loadNextPage: () => ref
+                        .read(noPlayingMoviesProvider.notifier)
+                        .loadNextPage(),
+                  ),
+                  MovieHorizontalview(
+                    movies: popularMovies,
+                    title: 'Populares',
+                    //subTitle: 'Lunes 22',
+                    loadNextPage: () =>
+                        ref.read(popularMoviesProvider.notifier).loadNextPage(),
+                  ),
+                  MovieHorizontalview(
+                    movies: nowPlayingMovies,
+                    title: 'Mejor calificados',
+                    subTitle: 'Desde siempre',
+                    loadNextPage: () => ref
+                        .read(noPlayingMoviesProvider.notifier)
+                        .loadNextPage(),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  )
+                ],
+              );
+            },
+            childCount: 1,
+          ),
+        )
       ],
     );
   }
