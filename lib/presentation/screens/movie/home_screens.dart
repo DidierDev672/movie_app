@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:movie_app/presentation/providers/movie/movies_providers.dart';
 import 'package:movie_app/presentation/providers/movie/movies_slideshow_provider.dart';
+import 'package:movie_app/presentation/providers/providers.dart';
 import 'package:movie_app/widget/widget.dart';
 
 class HomeScreens extends StatelessWidget {
@@ -36,6 +37,9 @@ class _HomeViewsState extends ConsumerState<_HomeViews> {
 
   @override
   Widget build(BuildContext context) {
+    final initialLoading = ref.watch(initialLoadingProvider);
+    if (initialLoading) return const FullScreenLoader();
+
     final nowPlayingMovies = ref.watch(noPlayingMoviesProvider);
     //! Popular movies
     final popularMovies = ref.watch(popularMoviesProvider);
@@ -44,6 +48,7 @@ class _HomeViewsState extends ConsumerState<_HomeViews> {
     //! Up comming
     final upComingMovies = ref.watch(upComingMoviesProvider);
     final slidesShowMovies = ref.watch(moviesSlideshowProvider);
+
     return CustomScrollView(
       slivers: [
         const SliverAppBar(
