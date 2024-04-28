@@ -4,3 +4,6 @@ export 'movie_repository_providers.dart';
 
 //* Actors
 export 'actors/actors.dart';
+
+//* Search
+export 'search/search.dart';
