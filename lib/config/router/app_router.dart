@@ -2,12 +2,18 @@ import 'package:go_router/go_router.dart';
 import 'package:movie_app/presentation/screens/screens.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/home/0',
   routes: [
+    //? Rutas padre/hijos
     GoRoute(
-      path: '/',
+      path: '/home:page',
       name: HomeScreens.name,
-      builder: (context, state) => const HomeScreens(),
+      builder: (context, state) {
+        final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
+        return HomeScreens(
+          pageIndex: pageIndex,
+        );
+      },
       routes: [
         GoRoute(
           path: 'movie/:id',
@@ -20,5 +26,9 @@ final appRouter = GoRouter(
         )
       ],
     ),
+    GoRoute(
+      path: '/',
+      redirect: (_, __) => '/home/0',
+    )
   ],
 );
