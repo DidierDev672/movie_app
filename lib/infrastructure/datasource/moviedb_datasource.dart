@@ -5,6 +5,9 @@ import 'package:movie_app/infrastructure/mappers/movie_mapper.dart';
 import 'package:movie_app/infrastructure/models/moviedb/movie_details.dart';
 import 'package:movie_app/infrastructure/models/moviedb/moviedb_response.dart';
 
+import '../mappers/mapper.dart';
+import '../models/models.dart';
+
 class MoviedbDataSource extends MovieDataSource {
   final dio = Dio(
     BaseOptions(
@@ -82,5 +85,27 @@ class MoviedbDataSource extends MovieDataSource {
     );
 
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Movie>> getSimilarMovies(int movieId) async {
+    final response = await dio.get('/movie/$movieId/similar');
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Video>> getYouTubeVideoById(int movieId) async {
+    final response = await dio.get('/movie/$movieId/videos');
+    final moviedbVideosReponse = MoviedbVideosResponse.fromJson(response.data);
+    final videos = <Video>[];
+
+    for (final moviedbVideo in moviedbVideosReponse.results) {
+      if (moviedbVideo.site == 'YouTube') {
+        final video = VideoMapper.moviedbVideoToEntity(moviedbVideo);
+        videos.add(video);
+      }
+    }
+
+    return videos;
   }
 }

@@ -6,12 +6,9 @@ import '../widget.dart';
 
 class MovieMasonry extends StatefulWidget {
   final List<Movie> movies;
-  final VoidCallback? loadNextPages;
-  const MovieMasonry({
-    super.key,
-    required this.movies,
-    this.loadNextPages,
-  });
+  final VoidCallback? loadNextPage;
+
+  const MovieMasonry({super.key, required this.movies, this.loadNextPage});
 
   @override
   State<MovieMasonry> createState() => _MovieMasonryState();
@@ -25,11 +22,11 @@ class _MovieMasonryState extends State<MovieMasonry> {
     super.initState();
 
     scrollController.addListener(() {
-      if (widget.loadNextPages == null) return;
+      if (widget.loadNextPage == null) return;
 
       if ((scrollController.position.pixels + 100) >=
           scrollController.position.maxScrollExtent) {
-        widget.loadNextPages!();
+        widget.loadNextPage!();
       }
     });
   }
@@ -54,11 +51,12 @@ class _MovieMasonryState extends State<MovieMasonry> {
           if (index == 1) {
             return Column(
               children: [
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 MoviePosterLink(movie: widget.movies[index])
               ],
             );
           }
+
           return MoviePosterLink(movie: widget.movies[index]);
         },
       ),
