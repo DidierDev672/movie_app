@@ -8,3 +8,7 @@ export 'models/moviedb/moviedb_response.dart';
 export 'datasource/actor_moviedb_datasource.dart';
 export 'repositories/actor_repository_impl.dart';
 export 'mappers/actor_mapper.dart';
+
+//? Local Storage
+export 'datasource/isar_datasource.dart';
+export 'repositories/local_storage_repository_impl.dart';

@@ -7,3 +7,6 @@ export 'actors/actors.dart';
 
 //* Search
 export 'search/search.dart';
+
+//? Local storage
+export 'storage/storage.dart';
