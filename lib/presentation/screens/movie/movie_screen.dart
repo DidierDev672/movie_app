@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:movie_app/config/helpers/human_formats.dart';
 import 'package:movie_app/presentation/providers/providers.dart';
 import 'package:movie_app/widget/movies/movie_rating.dart';
 import 'package:movie_app/widget/movies/similar_movies.dart';
