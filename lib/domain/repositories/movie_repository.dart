@@ -1,4 +1,4 @@
-import 'package:movie_app/domain/entities/movie.dart';
+import '../entities/entities.dart';
 
 abstract class MovieRepository {
   Future<List<Movie>> getNowPlaying({int page = 1});
@@ -7,4 +7,6 @@ abstract class MovieRepository {
   Future<List<Movie>> getUpcomming({int page = 1});
   Future<Movie> getMovieById(String id);
   Future<List<Movie>> searchMovies(String query);
+  Future<List<Movie>> getSimilarMovies(int movieId);
+  Future<List<Video>> getYouTubeVideoById(int movieId);
 }

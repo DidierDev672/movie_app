@@ -12,7 +12,7 @@ class HomeScreens extends StatelessWidget {
 
   final viewRoutes = const <Widget>[
     HomeViews(),
-    SizedBox(),
+    PopularView(),
     FavoritesView(),
   ];
 
